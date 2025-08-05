@@ -1,46 +1,37 @@
-public class Person {
-    // Instance variables
+// Abstract class Person - base class for Employee and Visitor
+public abstract class Person {
+    // Common attributes for all people
     private String name;
     private int age;
     private String address;
 
-    // Constructor
+    // Default constructor
+    public Person() {
+        this.name = "";
+        this.age = 0;
+        this.address = "";
+    }
+
+    // Parameterized constructor
     public Person(String name, int age, String address) {
         this.name = name;
         this.age = age;
         this.address = address;
     }
 
-    // Getters
-    public String getName() {
-        return name;
-    }
+    // Getter methods
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public String getAddress() { return address; }
 
-    public int getAge() {
-        return age;
-    }
+    // Setter methods
+    public void setName(String name) { this.name = name; }
+    public void setAge(int age) { this.age = age; }
+    public void setAddress(String address) { this.address = address; }
 
-    public String getAddress() {
-        return address;
-    }
-
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    // toString method
+    // toString method to return formatted person details
     @Override
     public String toString() {
-        return "Person{name='" + name + "', age=" + age + ", address='" + address + "'}";
+        return "Name: " + name + ", Age: " + age + ", Address: " + address;
     }
 }
-
