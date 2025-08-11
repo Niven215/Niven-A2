@@ -1,17 +1,28 @@
-// RideInterface - defines behaviors that every Ride must implement
+// RideInterface.java
+// Interface to define common behavior for all rides in the theme park
 public interface RideInterface {
 
-    // Part 3 - Methods for managing ride queue
-    void addVisitorToQueue(Visitor v);
-    void removeVisitorFromQueue();
-    void printQueue();
+    /**
+     * Displays the details of the ride (name, capacity, min height, etc.).
+     * Any ride implementing this interface must define how details are shown.
+     */
+    void showRideDetails();
 
-    // Part 4A - Methods for ride history tracking
-    void addVisitorToHistory(Visitor v);
-    boolean checkVisitorFromHistory(Visitor v);
-    int numberOfVisitors();
-    void printRideHistory();
+    /**
+     * Adds a visitor to the ride queue if they meet requirements.
+     * @param visitorName - the name of the visitor to add
+     */
+    void addToQueue(String visitorName);
 
-    // Part 5 - Ride operation
-    void runOneCycle();
+    /**
+     * Removes and returns the next visitor from the queue.
+     * @return The name of the visitor removed from the queue.
+     */
+    String removeFromQueue();
+
+    /**
+     * Shows the number of people currently in the queue.
+     * @return The queue size.
+     */
+    int getQueueSize();
 }
