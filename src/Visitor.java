@@ -1,23 +1,25 @@
+// Visitor.java
+// Visitor class extends Person, representing theme park visitors
+
 public class Visitor extends Person {
-    // Instance variables specific to Visitor
     private String ticketType;
     private boolean hasMembership;
 
     // Default constructor
     public Visitor() {
-        super("", 0, ""); // default values for Person
+        super();
         this.ticketType = "";
         this.hasMembership = false;
     }
 
-    // Parameterized constructor
-    public Visitor(String name, int age, String address, String ticketType, boolean hasMembership) {
-        super(name, age, address); // calling the superclass constructor
+    // Parameterized constructor including Person variables and Visitor-specific variables
+    public Visitor(String name, int age, String address, double height, String ticketType, boolean hasMembership) {
+        super(name, age, address, height);
         this.ticketType = ticketType;
         this.hasMembership = hasMembership;
     }
 
-    // Getter and Setter for ticketType
+    // Getters and setters for Visitor-specific variables
     public String getTicketType() {
         return ticketType;
     }
@@ -26,7 +28,6 @@ public class Visitor extends Person {
         this.ticketType = ticketType;
     }
 
-    // Getter and Setter for hasMembership
     public boolean isHasMembership() {
         return hasMembership;
     }
@@ -35,7 +36,7 @@ public class Visitor extends Person {
         this.hasMembership = hasMembership;
     }
 
-    // toString method
+    // toString method for printing Visitor details
     @Override
     public String toString() {
         return super.toString() + ", Visitor{ticketType='" + ticketType + "', hasMembership=" + hasMembership + "}";

@@ -1,41 +1,59 @@
 // Ride.java
-// Represents a theme park ride in the PRVMS system
+// Abstract class implementing RideInterface, base for all rides
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-public class Ride {
-    // Instance variables for ride details
+public abstract class Ride implements RideInterface {
     private String rideName;
-    private double minHeight; // Minimum height in meters
-    private int maxCapacity;
+    private int maxRider;          // Maximum visitors per ride cycle
+    private double minHeight;      // Minimum height requirement in meters
+    private Employee rideOperator; // Employee operating the ride
 
-    // Queue to store visitors waiting for the ride
-    private Queue<Visitor> rideQueue;
+    // Queue to store waiting visitors (FIFO)
+    private Queue<Visitor> visitorQueue;
+
+    // History of visitors who have taken the ride
+    private List<Visitor> visitorHistory;
+
+    private int numOfCycles;       // How many times the ride has run
 
     // Default constructor
     public Ride() {
-        this.rideName = "Unknown Ride";
+        this.rideName = "";
+        this.maxRider = 1;
         this.minHeight = 0.0;
-        this.maxCapacity = 0;
-        this.rideQueue = new LinkedList<>();
+        this.rideOperator = null;
+        this.visitorQueue = new LinkedList<>();
+        this.visitorHistory = new LinkedList<>();
+        this.numOfCycles = 0;
     }
 
     // Parameterized constructor
-    public Ride(String rideName, double minHeight, int maxCapacity) {
+    public Ride(String rideName, int maxRider, double minHeight) {
         this.rideName = rideName;
+        this.maxRider = maxRider;
         this.minHeight = minHeight;
-        this.maxCapacity = maxCapacity;
-        this.rideQueue = new LinkedList<>();
+        this.rideOperator = null;
+        this.visitorQueue = new LinkedList<>();
+        this.visitorHistory = new LinkedList<>();
+        this.numOfCycles = 0;
     }
 
-    // Getters and setters
+    // Getters and setters for ride properties
     public String getRideName() {
         return rideName;
     }
 
     public void setRideName(String rideName) {
         this.rideName = rideName;
+    }
+
+    public int getMaxRider() {
+        return maxRider;
+    }
+
+    public void setMaxRider(int maxRider) {
+        this.maxRider = maxRider;
     }
 
     public double getMinHeight() {
@@ -46,52 +64,104 @@ public class Ride {
         this.minHeight = minHeight;
     }
 
-    public int getMaxCapacity() {
-        return maxCapacity;
+    public Employee getRideOperator() {
+        return rideOperator;
     }
 
-    public void setMaxCapacity(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
+    public void setRideOperator(Employee rideOperator) {
+        this.rideOperator = rideOperator;
     }
 
-    public Queue<Visitor> getRideQueue() {
-        return rideQueue;
+    public int getNumOfCycles() {
+        return numOfCycles;
     }
 
-    // Method to add a visitor to the ride queue
-    public boolean addVisitorToQueue(Visitor visitor) {
-        if (rideQueue.size() < maxCapacity) {
-            if (visitor.getHeight() >= minHeight) {
-                rideQueue.add(visitor);
-                System.out.println(visitor.getName() + " added to " + rideName + " queue.");
-                return true;
-            } else {
-                System.out.println(visitor.getName() + " is too short for this ride.");
-                return false;
-            }
-        } else {
-            System.out.println("Queue for " + rideName + " is full.");
-            return false;
+    // Queue-related methods
+
+    // Add visitor to queue if they meet height requirement
+    @Override
+    public void addVisitorToQueue(Visitor visitor) {
+        if (visitor.getHeight() < this.minHeight) {
+            System.out.println(visitor.getName() + " does not meet the minimum height requirement for " + rideName);
+            return;
+        }
+        visitorQueue.add(visitor);
+        System.out.println(visitor.getName() + " added to queue for " + rideName);
+    }
+
+    // Remove visitor from queue (FIFO)
+    @Override
+    public void removeVisitorFromQueue() {
+        if (visitorQueue.isEmpty()) {
+            System.out.println("Queue is empty. No visitor to remove.");
+            return;
+        }
+        Visitor removedVisitor = visitorQueue.poll();
+        System.out.println(removedVisitor.getName() + " removed from the queue.");
+    }
+
+    // Print all visitors in queue
+    @Override
+    public void printQueue() {
+        if (visitorQueue.isEmpty()) {
+            System.out.println("Queue for " + rideName + " is empty.");
+            return;
+        }
+        System.out.println("Visitors currently in queue for " + rideName + ":");
+        for (Visitor v : visitorQueue) {
+            System.out.println(v);
         }
     }
 
-    // Method to remove visitor from the queue (when they ride)
-    public Visitor removeVisitorFromQueue() {
-        if (!rideQueue.isEmpty()) {
-            Visitor v = rideQueue.poll();
-            System.out.println(v.getName() + " has taken the ride: " + rideName);
-            return v;
-        } else {
-            System.out.println("No visitors in queue for " + rideName);
-            return null;
+    // Run one ride cycle
+    @Override
+    public void runOneCycle() {
+        if (rideOperator == null) {
+            System.out.println("Cannot run " + rideName + " because there is no operator assigned.");
+            return;
         }
+        if (visitorQueue.isEmpty()) {
+            System.out.println("No visitors waiting to ride " + rideName);
+            return;
+        }
+
+        int ridersThisCycle = 0;
+        System.out.println("Running one cycle of " + rideName);
+        while (ridersThisCycle < maxRider && !visitorQueue.isEmpty()) {
+            Visitor currentVisitor = visitorQueue.poll();
+            System.out.println(currentVisitor.getName() + " is riding " + rideName);
+            addVisitorToHistory(currentVisitor);
+            ridersThisCycle++;
+        }
+        numOfCycles++;
+        System.out.println("Cycle complete. Total cycles run: " + numOfCycles);
     }
 
-    // Method to display ride info
-    public void displayRideInfo() {
-        System.out.println("Ride Name: " + rideName);
-        System.out.println("Minimum Height: " + minHeight + "m");
-        System.out.println("Max Capacity: " + maxCapacity);
-        System.out.println("Current Queue Size: " + rideQueue.size());
+    // Visitor history methods
+    @Override
+    public void addVisitorToHistory(Visitor visitor) {
+        visitorHistory.add(visitor);
+    }
+
+    @Override
+    public boolean checkVisitorFromHistory(Visitor visitor) {
+        return visitorHistory.contains(visitor);
+    }
+
+    @Override
+    public int numberOfVisitors() {
+        return visitorHistory.size();
+    }
+
+    @Override
+    public void printRideHistory() {
+        if (visitorHistory.isEmpty()) {
+            System.out.println("No visitors have taken the ride " + rideName + " yet.");
+            return;
+        }
+        System.out.println("Visitors who have taken " + rideName + ":");
+        for (Visitor v : visitorHistory) {
+            System.out.println(v);
+        }
     }
 }

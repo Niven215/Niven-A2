@@ -1,34 +1,44 @@
-// Employee class that extends Person - for theme park staff
+// Employee.java
+// Employee class extends Person, representing staff working at the theme park
+
 public class Employee extends Person {
-    // Attributes specific to staff
     private String jobTitle;
-    private String shift;
+    private double salary;
 
     // Default constructor
     public Employee() {
-        super(); // Calls Person's default constructor
+        super();
         this.jobTitle = "";
-        this.shift = "";
+        this.salary = 0.0;
     }
 
-    // Parameterized constructor
-    public Employee(String name, int age, String address, String jobTitle, String shift) {
-        super(name, age, address); // Calls Person's constructor with parameters
+    // Parameterized constructor including Person variables
+    public Employee(String name, int age, String address, double height, String jobTitle, double salary) {
+        super(name, age, address, height);
         this.jobTitle = jobTitle;
-        this.shift = shift;
+        this.salary = salary;
     }
 
-    // Getter and Setter for jobTitle
-    public String getJobTitle() { return jobTitle; }
-    public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }
+    // Getters and setters for Employee-specific variables
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-    // Getter and Setter for shift
-    public String getShift() { return shift; }
-    public void setShift(String shift) { this.shift = shift; }
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-    // toString method to return full Employee details
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    // toString method for printing Employee details
     @Override
     public String toString() {
-        return super.toString() + ", Job Title: " + jobTitle + ", Shift: " + shift;
+        return super.toString() + ", Employee{jobTitle='" + jobTitle + "', salary=" + salary + "}";
     }
 }

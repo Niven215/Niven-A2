@@ -1,108 +1,94 @@
+// AssignmentTwo.java
+// Main class to test the theme park visitor management system
+
 public class AssignmentTwo {
     public static void main(String[] args) {
         AssignmentTwo app = new AssignmentTwo();
 
-        // Run each part step-by-step
         app.partThree();
         app.partFourA();
-        app.partFourB();
-        app.partFive();  // Will implement this in next step
+        app.partFive();
+
     }
 
-    // --------------------------------
-    // Part 3 – Queue demonstration
-    // --------------------------------
     public void partThree() {
-        System.out.println("\n--- PART 3: Visitor Queue ---");
+        System.out.println("--- Part 3: Queue Interface Demo ---");
 
-        Employee e1 = new Employee("Sarah", 28, "Staff Village", "Ride Operator", "Morning");
-        Ride rollerCoaster = new Ride("Roller Coaster", 5, e1);
+        RollerCoaster rc = new RollerCoaster("Thunder Loop", 3, 1.3, 5);
+        Employee operator = new Employee("Lori", 35, "245 Street", 1.75, "Ride Operator", 50000);
+        rc.setRideOperator(operator);
 
         // Create Visitors
-        Visitor v1 = new Visitor("Alice", 22, "Perth", "Day Pass", false);
-        Visitor v2 = new Visitor("Bob", 30, "Sydney", "VIP Pass", true);
-        Visitor v3 = new Visitor("Charlie", 25, "Melbourne", "Day Pass", true);
-        Visitor v4 = new Visitor("Diana", 35, "Brisbane", "Season Pass", false);
-        Visitor v5 = new Visitor("Ethan", 29, "Adelaide", "Day Pass", false);
+        Visitor v1 = new Visitor("Niven", 25, "Addr1", 1.6, "Adult", true);
+        Visitor v2 = new Visitor("Doreen", 17, "Addr2", 1.5, "Teen", false);
+        Visitor v3 = new Visitor("Molly", 12, "Addr3", 1.2, "Child", false);
+        Visitor v4 = new Visitor("Hancock", 22, "Addr4", 1.7, "Adult", true);
+        Visitor v5 = new Visitor("Natalie", 30, "Addr5", 1.8, "Adult", true);
 
-        // Add 5 visitors to queue
-        rollerCoaster.addVisitorToQueue(v1);
-        rollerCoaster.addVisitorToQueue(v2);
-        rollerCoaster.addVisitorToQueue(v3);
-        rollerCoaster.addVisitorToQueue(v4);
-        rollerCoaster.addVisitorToQueue(v5);
+        // Add Visitors to queue
+        rc.addVisitorToQueue(v1);
+        rc.addVisitorToQueue(v2);
+        rc.addVisitorToQueue(v3);  // Visitor Should fail height check should fail if minHeight is 1.3m
+        rc.addVisitorToQueue(v4);
+        rc.addVisitorToQueue(v5);
 
-        // Remove 1 visitor from queue
-        rollerCoaster.removeVisitorFromQueue();
+        rc.printQueue();
 
-        // Print queue
-        rollerCoaster.printQueue();
+        // Remove a visitor from the queue
+        rc.removeVisitorFromQueue();
+
+        rc.printQueue();
     }
 
-    // --------------------------------
-    // Part 4A – LinkedList Ride History
-    // --------------------------------
     public void partFourA() {
-        System.out.println("\n--- PART 4A: Visitor History ---");
+        System.out.println("--- Part 4A: Visitor History Demo ---");
 
-        Ride hauntedHouse = new Ride("Haunted House", 3, null);
+        RollerCoaster rc = new RollerCoaster("Thunder Loop", 3, 1.3, 5);
+        Employee operator = new Employee("Steve", 35, "123 Street", 1.75, "Ride Operator", 50000);
+        rc.setRideOperator(operator);
+
+        // Create Visitors
+        Visitor v1 = new Visitor("Niven", 25, "Addr1", 1.6, "Adult", true);
+        Visitor v2 = new Visitor("Doreen", 17, "Addr2", 1.5, "Teen", false);
+        Visitor v3 = new Visitor("Molly", 22, "Addr4", 1.7, "Adult", true);
 
         // Add Visitors to history
-        Visitor v1 = new Visitor("Liam", 19, "Gold Coast", "Day Pass", true);
-        Visitor v2 = new Visitor("Emma", 27, "Perth", "VIP Pass", false);
-        Visitor v3 = new Visitor("Noah", 31, "Darwin", "Day Pass", false);
-        Visitor v4 = new Visitor("Olivia", 24, "Canberra", "Season Pass", true);
-        Visitor v5 = new Visitor("James", 21, "Hobart", "VIP Pass", false);
+        rc.addVisitorToHistory(v1);
+        rc.addVisitorToHistory(v2);
+        rc.addVisitorToHistory(v3);
 
-        hauntedHouse.addVisitorToHistory(v1);
-        hauntedHouse.addVisitorToHistory(v2);
-        hauntedHouse.addVisitorToHistory(v3);
-        hauntedHouse.addVisitorToHistory(v4);
-        hauntedHouse.addVisitorToHistory(v5);
+        rc.printRideHistory();
 
-        // Check for a specific visitor
-        hauntedHouse.checkVisitorFromHistory(v3);
-
-        // Print number of visitors
-        System.out.println("🔢 Total Visitors in Ride History: " + hauntedHouse.numberOfVisitors());
-
-        // Print all ride history
-        hauntedHouse.printRideHistory();
+        System.out.println("Is Doreen in history? " + rc.checkVisitorFromHistory(v2));
+        System.out.println("Number of visitors who took the ride: " + rc.numberOfVisitors());
     }
 
-    // --------------------------------
-    // Part 4B – Sorting Visitors
-    // --------------------------------
-    public void partFourB() {
-        System.out.println("\n--- PART 4B: Sorted Visitor History ---");
-
-        Ride dropTower = new Ride("Drop Tower", 4, null);
-
-        Visitor v1 = new Visitor("Zoe", 26, "Melbourne", "VIP", true);
-        Visitor v2 = new Visitor("Adam", 33, "Brisbane", "Day Pass", false);
-        Visitor v3 = new Visitor("Mia", 21, "Sydney", "Season Pass", true);
-        Visitor v4 = new Visitor("Ben", 29, "Perth", "VIP", false);
-        Visitor v5 = new Visitor("Eva", 24, "Darwin", "Day Pass", true);
-
-        dropTower.addVisitorToHistory(v1);
-        dropTower.addVisitorToHistory(v2);
-        dropTower.addVisitorToHistory(v3);
-        dropTower.addVisitorToHistory(v4);
-        dropTower.addVisitorToHistory(v5);
-
-        System.out.println("📋 Before sorting:");
-        dropTower.printRideHistory();
-
-        // Sort using VisitorComparator
-        dropTower.getRideHistory().sort(new VisitorComparator());
-
-        System.out.println("✅ After sorting by Name and Age:");
-        dropTower.printRideHistory();
-    }
-
-    // Part 5 will come next...
     public void partFive() {
-        System.out.println("\n--- PART 5: Run One Ride Cycle ---");
-        // Will be implemented in next step
+        System.out.println("--- Part 5: Running a Ride Cycle ---");
+
+        RollerCoaster rc = new RollerCoaster("Thunder Loop", 3, 1.3, 5);
+        Employee operator = new Employee("Steve", 35, "123 Street", 1.75, "Ride Operator", 50000);
+        rc.setRideOperator(operator);
+
+        // Create Visitors
+        Visitor v1 = new Visitor("Niven", 25, "Addr1", 1.6, "Adult", true);
+        Visitor v2 = new Visitor("Doreen", 17, "Addr2", 1.5, "Teen", false);
+        Visitor v3 = new Visitor("Molly", 22, "Addr4", 1.7, "Adult", true);
+        Visitor v4 = new Visitor("Hancock", 30, "Addr5", 1.8, "Adult", true);
+
+        // Add Visitors to queue
+        rc.addVisitorToQueue(v1);
+        rc.addVisitorToQueue(v2);
+        rc.addVisitorToQueue(v3);
+        rc.addVisitorToQueue(v4);
+
+        rc.printQueue();
+
+        // Run one ride cycle
+        rc.runOneCycle();
+
+        rc.printQueue();
+
+        rc.printRideHistory();
     }
 }
